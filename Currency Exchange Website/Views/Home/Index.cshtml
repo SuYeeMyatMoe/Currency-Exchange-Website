@@ -1,0 +1,66 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+</div>
+
+<!-- Add method="post" to ensure the form submits data -->
+<form class="container" method="post" action="/Home/Index">
+    <h2>Currency Converter v2</h2>
+
+    <label for="source">Source Currency:</label>
+    <select id="source" name="fromCurrency" required>
+        <option value="">--SELECT ONE--</option>
+        <option value="USD">USD</option>
+        <option value="EUR">EUR</option>
+        <option value="SDG">SDG</option>
+    </select>
+
+    <label for="destination">Destination Currency:</label>
+    <select id="destination" name="toCurrency" required>
+        <option value="">--SELECT ONE--</option>
+        <option value="USD">USD</option>
+        <option value="EUR">EUR</option>
+        <option value="SDG">SDG</option>
+    </select>
+
+    <label for="amount">Amount:</label>
+    <input class="amount" type="number" id="amount" name="amount" placeholder="Enter amount" required>
+
+    <label for="result">Result:</label>
+    <!-- Fixed missing closing quote in value attribute -->
+    <input class="result" type="text" id="result" readonly value="@ViewData["Result"]">
+
+    <!-- Changed button type to submit so it properly sends data -->
+    <button type="submit" class="convert-btn">Convert</button>
+
+    <!-- Reset button remains for clearing input fields -->
+    <button type="submit" name="actionType" value="reset" class="reset-btn">Reset</button>
+
+
+    <div style="color:red;text-align:center; margin-top:10px">
+        @ViewData["Error"]
+    </div>
+</form>
+<script>
+    window.onload = function fillUserInput() {
+        var fromCurrency = "@ViewBag.SelectedCurrency";
+        if (fromCurrency) {
+            document.getElementsByName("fromCurrency")[0].value = fromCurrency;
+        }
+
+        var toCurrency = "@ViewBag.DestinationCurrency";
+        if (toCurrency) {
+            document.getElementsByName("toCurrency")[0].value = toCurrency;
+        }
+
+        var amount = parseFloat("@ViewBag.InputAmount");
+        if (!isNaN(amount) && amount > 0) {
+            document.getElementsByName("amount")[0].value = amount;
+        }
+    };
+    
+</script>

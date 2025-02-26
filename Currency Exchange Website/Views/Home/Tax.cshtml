@@ -1,0 +1,205 @@
+﻿<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Income Tax Calculator</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .tax-calculator {
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            max-width: 700px;
+            margin: 0 auto;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #e67e22;
+            text-align: left;
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+
+        .info-box {
+            background-color: #b6e2fe;
+            padding: 15px;
+            border-radius: 5px;
+            font-size: 14px;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .fa-solid {
+            color: #5583a1;
+        }
+
+        .input-group {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+
+            .input-group label {
+                font-size: 14px;
+                flex: 1;
+            }
+
+        .select-group {
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        input[type="number"] {
+            flex: 2;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .checkbox-group, .radio-group {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            width: 50%;
+        }
+
+            .checkbox-group label, .radio-group label {
+                font-size: 14px;
+                margin-left: 5px;
+            }
+
+        .button-container {
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .calculate {
+            background-color: #f7931e;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        #children {
+            margin-left: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="tax-calculator">
+        <h1>Income Tax Calculator</h1>
+        <div class="info-box">
+            <i class="fa-solid fa-circle-exclamation"></i>         
+                <span>@ViewBag.result</span><br />
+                <span>@ViewBag.annual</span>        
+        </div>
+
+        <form method="post" action="/home/tax">
+            <div class="input-group">
+                <label for="income">တစ်လဝင်ငွေ (ကျပ်)</label>
+                <input type="number" id="income" name="income" value="@ViewBag.income">
+            </div>
+
+            <div class="select-group">
+                <div class="checkbox-group">
+                    <input type="hidden" name="parent1" value="">
+                    <input type="checkbox" id="parent1" name="parent1" value="yes" @(ViewBag.parent1 == "yes" ? "checked" : "")>
+                    <label for="parent1">အတူနေအဘ</label>
+
+                    <input type="hidden" name="parent2" value="">
+                    <input type="checkbox" id="parent2" name="parent2" value="yes" @(ViewBag.parent2 == "yes" ? "checked" : "")>
+                    <label for="parent2">အတူနေအမိ</label>
+                </div>
+
+                <div class="radio-group">
+                    <label>အိမ်ထောင်</label>
+                    <input type="radio" id="married" name="marital_status" value="married" @(ViewBag.marital_status == "married" ? "checked" : "")>
+                    <label for="married">ရှိ</label>
+
+                    <input type="radio" id="single" name="marital_status" value="single" @(ViewBag.marital_status == "single" ? "checked" : "")>
+                    <label for="single">မရှိ</label>
+                </div>
+
+                <div class="children-group" style="display: none;">
+                    <div class="input-group">
+                        <label for="children">သားသမီး</label>
+                        <input type="number" id="children" name="children" value="@ViewBag.children" min="0">
+                    </div>
+                </div>
+            </div>
+
+            <div class="button-container">
+                <button type="submit" class="calculate">တွက်ချက်ပါ</button>
+            </div>
+        </form>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Retrieve ViewBag values and set them to the form inputs
+            var income = "@(ViewBag.income ?? 300000)"; // Ensure ViewBag.income has a default value (300000)
+            var parent1 = "@(ViewBag.parent1 ?? "")"; // Default to an empty string if parent1 is null
+            var parent2 = "@(ViewBag.parent2 ?? "")"; // Default to an empty string if parent2 is null
+
+            // Set values to input fields
+            var incomeInput = document.getElementsByName("income")[0];
+            if (incomeInput && income) {
+                incomeInput.value = income;
+            }
+
+            // Check the parent checkboxes
+            if (parent1 === "yes") {
+                document.getElementById('parent1').checked = true;
+            } else {
+                document.getElementById('parent1').checked = false;
+            }
+
+            if (parent2 === "yes") {
+                document.getElementById('parent2').checked = true;
+            } else {
+                document.getElementById('parent2').checked = false;
+            }
+
+            // Ensure correct state for children input visibility
+            const marriedRadio = document.getElementById('married');
+            const singleRadio = document.getElementById('single');
+            const childrenGroup = document.querySelector('.children-group');
+            const childrenInput = document.getElementById('children');
+
+            function toggleChildren() {
+                if (marriedRadio.checked) {
+                    childrenGroup.style.display = 'block';
+                } else {
+                    childrenGroup.style.display = 'none';
+                    childrenInput.value = 0;
+                }
+            }
+
+            marriedRadio.addEventListener('change', toggleChildren);
+            singleRadio.addEventListener('change', toggleChildren);
+            toggleChildren(); // Ensure correct state on page load
+        });
+
+
+
+    </script>
+</body>
+</html>

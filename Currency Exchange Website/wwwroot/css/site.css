@@ -1,0 +1,125 @@
+html {
+    font-size: 14px;
+}
+
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    margin-bottom: 60px;
+}
+
+.container {
+    width: 100%;
+    margin: auto;
+    border: 1px solid #ccc;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+    text-align: center;
+}
+
+
+    .container label,select {
+        display: block;
+        width: 100%;
+        margin-bottom: 10px;
+    }
+.container .amount,.result {
+    display: block;
+    width: 100%;
+    margin-bottom: 10px;
+}
+button {
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+    border: solid 1px #ccc;
+    border-radius: 5px;
+    box-shadow: 2px 2px 0px 0px #000000;
+}
+
+.convert-btn {
+    background-color: green;
+    color: white;
+}
+
+.reset-btn {
+    background-color: yellow;
+}
+
+
+
+.reg_container {
+    width: 350px;
+    background: white;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin: auto;
+}
+
+    .reg_container h2 {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+.reg_container label {
+    font-weight: bold;
+    display: block;
+    margin-top: 10px;
+}
+
+.reg_container input, select, textarea {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+
+    .reg_container .gender {
+        padding-right: 50%;
+        display: flex;
+        align-items: center;
+        margin-top: 5px;
+    }
+        .reg_container .gender input {
+            margin-right: 5px;
+        }
+
+        .reg_container .gender label {
+            margin-right: 15px;
+        }
+
+.reg_container button {
+    width: 100%;
+    padding: 10px;
+    margin-top: 15px;
+    border: none;
+    background-color: green;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 3px;
+}
+
+.reg_container button:hover {
+    background-color: darkgreen;
+}
